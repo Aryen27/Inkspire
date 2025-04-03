@@ -17,7 +17,16 @@ router.get('/login', (req, res) => {
 });
 
 router.post('/login', async (req, res) => {
-
+  const { email, password } = req.body;
+  try {
+    const [results, fields] = await connection.query(
+      'SELECT * FROM `users` WHERE `email`= ? AND `password`= ?', [email, password]
+    );
+    res.status(200).json({ success: true, data: results });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ success: false, message: err });
+  }
 });
 
 router.get('/signup', (req, res) => {
