@@ -1,7 +1,7 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcrypt'
-import jsonwebtoken from 'jsonwebtoken'
+import jwt from 'jsonwebtoken'
 import connectionCred from '../db/connection.js';
 
 // DB Connection
@@ -11,9 +11,6 @@ const router = express.Router();
 
 // Encrypting password
 const saltRounds = 10;
-
-// JWT
-const jwt = jsonwebtoken;
 
 router.get('/login', (req, res) => {
   // Render login page

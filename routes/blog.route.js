@@ -1,12 +1,15 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
 import connectionCred from '../db/connection.js';
-
+import jwt from 'jsonwebtoken'
+import { promisify } from 'util'
+import { protect } from '../middleware/protectRoutes.js';
 
 const router = express.Router();
 
 const connection = connectionCred;
 
+// ROUTES
 router.get('/', async (req, res) => {
   /*
   1. Get all the blogs from database
@@ -51,7 +54,7 @@ router.get('/:id', async (req, res) => {
 })
 
 
-router.post('/', async (req, res) => {
+router.post('/', protect, async (req, res) => {
   /*
   1. Check if user has logged in.
   2. Add blog post to database.
@@ -79,7 +82,7 @@ router.post('/', async (req, res) => {
 
 })
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', protect, async (req, res) => {
   const bid = req.params.id;
   try {
     const [results, fields] = await connection.query('DELETE FROM blogs WHERE bid=?', [bid]);
@@ -97,7 +100,7 @@ router.delete('/:id', async (req, res) => {
 
 })
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', protect, async (req, res) => {
   const bid = req.params.id;
   const { title, content } = req.body;
 

@@ -1,12 +1,13 @@
 import express from 'express';
 import connectionCred from '../db/connection.js';
 import mysql from 'mysql2/promise';
+import { protect } from '../middleware/protectRoutes.js';
 
 const router = express.Router();
 
 const connection = connectionCred;
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', protect, async (req, res) => {
   const uid = req.params.id;
 
   try {
@@ -24,7 +25,7 @@ router.get('/:id', async (req, res) => {
 
 })
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', protect, async (req, res) => {
   const { name, email } = req.body;
   const uid = req.params.id;
 
@@ -41,6 +42,22 @@ router.patch('/:id', async (req, res) => {
   }
 })
 
+// Add route to reset passwords via email
+router.get('/resetpw', async (req, res) => {
+  /*
+  1. Verify email id
+  2. Create email template
+  3. Send pw reset link to email
+  */
+})
 
+router.post('/resetpw/:token', async (req, res) => {
+  /*
+  1. Verify pw reset token
+  2. Check if pws match
+  3. Hash new pw
+  4. Update pw in DB
+  */
+})
 
 export default router;
