@@ -1,17 +1,11 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
+import connectionCred from '../db/connection.js';
 
 
 const router = express.Router();
 
-const connection = await mysql.createConnection({
-
-  host: 'localhost',
-  user: 'D4_89760_Aryan',
-  password: 'manager',
-  database: 'club_elite'
-}
-)
+const connection = connectionCred;
 
 router.get('/', async (req, res) => {
   /*
@@ -118,7 +112,6 @@ router.patch('/:id', async (req, res) => {
     console.error('Error updating blog:', err);
     return res.status(500).json({ message: 'Internal server error' });
   }
-
 })
 
 export default router;

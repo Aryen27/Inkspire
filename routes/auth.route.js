@@ -2,14 +2,10 @@ import express from 'express';
 import mysql from 'mysql2/promise';
 import bcrypt from 'bcrypt'
 import jsonwebtoken from 'jsonwebtoken'
+import connectionCred from '../db/connection.js';
 
 // DB Connection
-const connection = await mysql.createConnection({
-  host: 'localhost',
-  user: 'D4_89760_Aryan',
-  password: 'manager',
-  database: 'club_elite',
-});
+const connection = connectionCred;
 
 const router = express.Router();
 
