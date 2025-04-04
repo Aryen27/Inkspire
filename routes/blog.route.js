@@ -5,19 +5,23 @@ import mysql from 'mysql2/promise';
 const router = express.Router();
 
 const connection = await mysql.createConnection({
+
   host: 'localhost',
   user: 'D4_89760_Aryan',
   password: 'manager',
-  database: 'club_elite',
-});
+  database: 'club_elite'
+}
+)
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
   /*
   1. Get all the blogs from database
   2. Sort the blogs by newest first
   3. Display blogs in a grid of 4 for lg-vp & 1 form sm-vp & 2 for md-vp
   */
-  res.status(200).json({ data: 'Hello' });
+  const [results, fields] = await connection.query('SELECT * FROM blogs ORDER BY updatedAt DESC');
+
+  res.status(200).json({ data: results });
 })
 
 
@@ -28,6 +32,9 @@ router.get('/:id', (req, res) => {
   3. Check if user is logged in
   4. Show author if logged in and vice versa
   */
+  
+  const blogId = req.params.id;
+  
 })
 
 
