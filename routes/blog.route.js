@@ -61,11 +61,21 @@ router.post('/', async (req, res) => {
   [results, fields] = await connection.query('INSERT INTO blogs(title, content, authorid) VALUES(?, ?, ?)', [title, content, authorid]);
   console.log(results);
   if (results.serverStatus != 2)
-    return res.status(500).json({ message: 'There a issue processing your request' });
+    return res.status(500).json({ message: 'There was an issue processing your request' });
 
   return res.status(200).json({ message: 'Your blog has been added successfully' });
 })
 
+router.delete('/:id', async (req, res) => {
+  const bid = req.params.id;
 
+  const [results, fields] = await connection.query('DELETE FROM blogs WHERE bid=?', [bid]);
+  console.log(results);
+
+  if (results.affectedRows == 0)
+    return res.status(500).json({ message: 'There was an issue processing your request' });
+
+  return res.status(200).json({ message: 'Blog deleted successfully' });
+})
 
 export default router;
