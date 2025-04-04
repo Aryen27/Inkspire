@@ -1,5 +1,6 @@
 import express from 'express';
 import authRoutes from './routes/auth.route.js';
+import blogRoutes from './routes/blog.route.js'
 import 'dotenv/config'
 
 const app = express();
@@ -13,6 +14,8 @@ app.get('/', (req,res) => {
 // app.use('blog', handleBlog);
 
 app.use('/auth', authRoutes);
+app.use('/blog', blogRoutes);
+
 
 app.listen(PORT, 'localhost', () => {
   console.log("Server is running @ http://localhost:"+PORT);
