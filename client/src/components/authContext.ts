@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 interface authContextType{
   user: any,
@@ -34,13 +34,28 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = { { childre
     localStorage.setItem('token', token);
     setIsAuthenticated(true);
     setUser(userData);
-  }
+  };
 
   const logout = () => {
     localStorage.removeItem('user');
     localStorage.removeItem('token');
     setIsAuthenticated(false);
     setUser(null);
+  };
+
+  return (
+    <authContext.Provider value={{ user, login, logout, isAuthenticated }}>
+      {children}
+    </authContext.Provider>
+  );
+};
+
+// Custom hook for auth
+export const useAuth = () => {
+  const context = useContext(authContext);
+  if (!context) {
+    throw new Error('Auth hook must be used within provider');
   }
+  return context;
 }
 
