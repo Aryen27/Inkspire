@@ -9,13 +9,19 @@ const connection = connectionCred;
 router.get('/:id', async (req, res) => {
   const uid = req.params.id;
 
-  const [userRes, userFields] = await connection.query('SELECT * FROM users WHERE uid=?',[uid]);
-  const [blogRes, blogFields] = await connection.query('SELECT * FROM blogs WHERE authorid=?',[uid]);
-  
-  if (userRes.length == 0)
-    return res.status(404).json({ sucess: false, message: 'User not found' });
-  
-  return res.status(200).json({sucess:true, userData: userRes[0], blogData: blogRes});
+  try {
+    const [userRes, userFields] = await connection.query('SELECT * FROM users WHERE uid=?',[uid]);
+    const [blogRes, blogFields] = await connection.query('SELECT * FROM blogs WHERE authorid=?',[uid]);
+    
+    if (userRes.length == 0)
+      return res.status(404).json({ sucess: false, message: 'User not found' });
+    
+    return res.status(200).json({sucess:true, userData: userRes[0], blogData: blogRes});
+  } catch (err) {
+    console.error('Error getting user details:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+
 })
 
 router.patch('/:id', async (req, res) => {

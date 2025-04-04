@@ -18,7 +18,7 @@ router.get('/', async (req, res) => {
 
     res.status(200).json({ data: results });
   } catch (err) {
-    console.error('Error updating blog:', err);
+    console.error('Error getting blog data:', err);
     return res.status(500).json({ message: 'Internal server error' });
   }
 
@@ -44,7 +44,7 @@ router.get('/:id', async (req, res) => {
     
     return res.status(200).json({ data: results });
   } catch (err) {
-    console.error('Error updating blog:', err);
+    console.error('Error getting blog by id:', err);
     return res.status(500).json({ message: 'Internal server error' });
   }
 
@@ -73,7 +73,7 @@ router.post('/', async (req, res) => {
 
   return res.status(200).json({ message: 'Your blog has been added successfully' });
   } catch (err) {
-    console.error('Error updating blog:', err);
+    console.error('Error posting a blog:', err);
     return res.status(500).json({ message: 'Internal server error' });
   }
 
@@ -90,7 +90,7 @@ router.delete('/:id', async (req, res) => {
   
     return res.status(200).json({ message: 'Blog deleted successfully' });
   } catch (err) {
-    console.error('Error updating blog:', err);
+    console.error('Error deleteing blog:', err);
     return res.status(500).json({ message: 'Internal server error' });
   }
 
