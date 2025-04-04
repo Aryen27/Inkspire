@@ -25,7 +25,7 @@ router.get('/', async (req, res) => {
 })
 
 
-router.get('/:id', (req, res) => {
+router.get('/:id', async (req, res) => {
   /*
   1. Get the id from request params
   2. Get the blog from the given id from db
@@ -34,7 +34,12 @@ router.get('/:id', (req, res) => {
   */
   
   const blogId = req.params.id;
+  const [results, fields] = await connection.query('SELECT * FROM blogs WHERE bid=?', [blogId]);
+
+  if (results.length == 0)
+    return res.status(400).json({ sucess: false, message: 'Blog doesn\'t exist' });
   
+  return res.status(200).json({ data: results });
 })
 
 
