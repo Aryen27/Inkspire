@@ -6,8 +6,16 @@ const router = express.Router();
 
 const connection = connectionCred;
 
-router.get('/', async (req, res) => {
+router.get('/:id', async (req, res) => {
+  const uid = req.params.id;
+
+  const [userRes, userFields] = await connection.query('SELECT * FROM users WHERE uid=?',[uid]);
+  const [blogRes, blogFields] = await connection.query('SELECT * FROM blogs WHERE authorid=?',[uid]);
   
+  if (userRes.length == 0)
+    return res.status(404).json({ sucess: false, message: 'User not found' });
+  
+  return res.status(200).json({sucess:true, userData: userRes[0], blogData: blogRes});
 })
 
 router.patch('/:id', async (req, res) => {
