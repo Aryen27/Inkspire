@@ -19,9 +19,15 @@ router.get('/', async (req, res) => {
   2. Sort the blogs by newest first
   3. Display blogs in a grid of 4 for lg-vp & 1 form sm-vp & 2 for md-vp
   */
-  const [results, fields] = await connection.query('SELECT * FROM blogs ORDER BY updatedAt DESC');
+  try {
+    const [results, fields] = await connection.query('SELECT * FROM blogs ORDER BY updatedAt DESC');
 
-  res.status(200).json({ data: results });
+    res.status(200).json({ data: results });
+  } catch (err) {
+    console.error('Error updating blog:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+
 })
 
 
@@ -35,12 +41,19 @@ router.get('/:id', async (req, res) => {
   
   // Get blog from database
   const blogId = req.params.id;
-  const [results, fields] = await connection.query('SELECT * FROM blogs WHERE bid=?', [blogId]);
 
-  if (results.length == 0)
-    return res.status(400).json({ sucess: false, message: 'Blog doesn\'t exist' });
-  
-  return res.status(200).json({ data: results });
+  try {
+    const [results, fields] = await connection.query('SELECT * FROM blogs WHERE bid=?', [blogId]);
+
+    if (results.length == 0)
+      return res.status(400).json({ sucess: false, message: 'Blog doesn\'t exist' });
+    
+    return res.status(200).json({ data: results });
+  } catch (err) {
+    console.error('Error updating blog:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+
 })
 
 
@@ -53,7 +66,8 @@ router.post('/', async (req, res) => {
   // Adding blog to database
   const { authorid, title, content } = req.body;
 
-  // Check if a similar blog already exists
+  try {
+      // Check if a similar blog already exists
   let [results, fields] = await connection.query('SELECT * FROM blogs WHERE title=? AND authorid=?', [title, authorid]);
   if (results.length != 0)
     return res.status(400).json({ message: 'A similar blog already exists!' });
@@ -64,18 +78,47 @@ router.post('/', async (req, res) => {
     return res.status(500).json({ message: 'There was an issue processing your request' });
 
   return res.status(200).json({ message: 'Your blog has been added successfully' });
+  } catch (err) {
+    console.error('Error updating blog:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+
 })
 
 router.delete('/:id', async (req, res) => {
   const bid = req.params.id;
+  try {
+    const [results, fields] = await connection.query('DELETE FROM blogs WHERE bid=?', [bid]);
+    console.log(results);
+  
+    if (results.affectedRows == 0)
+      return res.status(500).json({ message: 'There was an issue processing your request' });
+  
+    return res.status(200).json({ message: 'Blog deleted successfully' });
+  } catch (err) {
+    console.error('Error updating blog:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
 
-  const [results, fields] = await connection.query('DELETE FROM blogs WHERE bid=?', [bid]);
-  console.log(results);
 
-  if (results.affectedRows == 0)
-    return res.status(500).json({ message: 'There was an issue processing your request' });
+})
 
-  return res.status(200).json({ message: 'Blog deleted successfully' });
+router.patch('/:id', async (req, res) => {
+  const bid = req.params.id;
+  const { title, content } = req.body;
+
+  try {
+    const[results, fields] = await connection.query('UPDATE blogs set title=?, content=? WHERE bid=?', [title, content, bid]);
+
+    if (results.affectedRows == 0)
+      return res.status(404).json({ message: 'Blog not found or no change detected' });
+  
+    return res.status(200).json({ message: 'Blog has been updated successfully' });
+  } catch (err) {
+    console.error('Error updating blog:', err);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+
 })
 
 export default router;
