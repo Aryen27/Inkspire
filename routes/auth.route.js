@@ -23,11 +23,30 @@ router.get('/login', (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const [results, fields] = await connection.query(
-      'SELECT * FROM `users` WHERE `email`= ? AND `password`= ?', [email, password]
+      'SELECT * FROM `users` WHERE `email`= ? ', [email]
     );
-    res.status(200).json({ success: true, data: results });
+    console.log(results);
+
+    // Check if user exists
+    if (results.length == 0)
+      return res.status(404).json({ success: false, message: 'User not found' });
+
+    const name = results[0].name;
+    const storedPassword = results[0].password;
+    bcrypt.compare(password, storedPassword, (err, results) => {
+      if (err)
+        throw err;
+      if (results) {
+        res.status(200).json({ success: true, message: `Welcome ${name}!`, data: results });
+      }
+      else {
+        res.status(401).json({ success: false, message: 'Password is incorrect' });
+      }
+    })
+    
   } catch (err) {
     console.log(err);
     res.status(500).json({ success: false, message: err });
