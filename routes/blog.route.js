@@ -3,7 +3,7 @@ import mysql from 'mysql2/promise';
 import connectionCred from '../db/connection.js';
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'
-import { protect } from '../middleware/protectRoutes.js';
+import { protect, partialProtect } from '../middleware/protectRoutes.js';
 
 const router = express.Router();
 
@@ -28,7 +28,7 @@ router.get('/', async (req, res) => {
 })
 
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', partialProtect, async (req, res) => {
   /*
   1. Get the id from request params
   2. Get the blog from the given id from db
@@ -40,12 +40,17 @@ router.get('/:id', async (req, res) => {
   const blogId = req.params.id;
 
   try {
-    const [results, fields] = await connection.query('SELECT * FROM blogs WHERE bid=?', [blogId]);
+    const [results, fields] = await connection.query('SELECT b.*, u.name FROM blogs b INNER JOIN users u WHERE b.authorid=u.uid AND b.bid=?', [blogId]);
 
     if (results.length == 0)
       return res.status(400).json({ sucess: false, message: 'Blog doesn\'t exist' });
     
-    return res.status(200).json({ data: results });
+    if (req.user == null) {
+      results[0].authorid = null;
+      results[0].name = null;
+    }
+    const blog = results;
+    return res.status(200).json({ data: blog });
   } catch (err) {
     console.error('Error getting blog by id:', err);
     return res.status(500).json({ message: 'Internal server error' });
