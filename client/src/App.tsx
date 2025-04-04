@@ -9,7 +9,6 @@ import Login from './pages/Login.tsx';
 
 const router = createBrowserRouter([
     {
-
       path: "/",
       element: <HomeLayout/>,
       errorElement: <ErrorPage/>,
