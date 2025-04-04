@@ -1,5 +1,6 @@
 import express from 'express';
 import mysql from 'mysql2/promise';
+import bcrypt from 'bcrypt'
 
 // DB Connection
 const connection = await mysql.createConnection({
@@ -10,6 +11,10 @@ const connection = await mysql.createConnection({
 });
 
 const router = express.Router();
+
+// Encrypting password
+const saltRounds = 10;
+
 
 
 router.get('/login', (req, res) => {
@@ -33,11 +38,22 @@ router.get('/signup', (req, res) => {
   // Render signup form
 });
 
-router.post('/signup', (req, res) => {
-  const { name, email, password } = req.body;
-  console.log(req.body);
-  console.log(email, password);
-  res.status(200).json({ success: true, message: "You have successfuly created an account" });
+router.post('/signup', async (req, res) => {
+  const { name, email } = req.body;
+  let { password } = req.body;
+  const [results,fields] = await connection.query('SELECT * FROM `users` WHERE `email`= ?', [email]);
+  if (results.length != 0)
+    return res.status(409).json({success: false, message: 'An account is already associated with this email. Please login or use another email.'})
+
+  // Hashing the password
+  const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+  try { 
+    const results = await connection.query('INSERT INTO `users`(name, email, password) values(?,?,?)', [name, email, hashedPassword]);
+    res.status(200).json({ success: true, message: "You have successfuly created an account" });
+  } catch (err) {
+    res.status(500).json({ success: false, message: err });
+  }
 });
 
 export default router;
