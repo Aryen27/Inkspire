@@ -9,9 +9,9 @@ function Login() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('form submitted');
     // Get data from form
-    const data:any = new FormData(e.target);
+    const data: any = new FormData(e.target);
+    const username: string = data.get(name);
     const email: string = data.get("email");
     const password: string = data.get("password");
 
@@ -30,9 +30,11 @@ function Login() {
     if (res.success != true && res.message) {
       throw new Error(res.message);
     }
+    const resData = await res.json();
+    const user = resData.data;
+    console.log(user);
 
-    const reqData = await res.json();
-    login(body, reqData.token); //Set Auth status of app
+    login(user, resData.token); //Set Auth status of app
     window.location.href= 'http://localhost:5173/';
   };
 
