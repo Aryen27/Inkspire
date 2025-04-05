@@ -1,12 +1,14 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
+import Navbar from '../ui/Navbar';
+import Footer from '../ui/Footer';
 
 function HomeLayout() {
   return (
     <>
-    <div className='text-lg' >NavBar </div>
+    <Navbar/>
     <Outlet />
-    <div className='text-lg' >Footer</div>
+    <Footer/>
     </>
   )
 }
