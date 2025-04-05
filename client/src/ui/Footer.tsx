@@ -3,7 +3,7 @@ import React from 'react'
 function Footer() {
   return (
     <div>
-      <div className='bg-slate-200 w-11/12 m-auto py-2'>
+      <div className='bg-slate-100 w-11/12 m-auto py-2'>
         <div className='flex justify-evenly border-b-2 border-slate-400 w-4/5 m-auto text-[0.55rem] py-2'>
           <div>
           <ul className='flex flex-col gap-1 pb-2'>
@@ -21,8 +21,8 @@ function Footer() {
             <div>
             <ul className='flex flex-col gap-1 pb-2'>
             <li className='font-semibold' > Contact </li>
-              <li>Github</li>
-              <li>Linkedin</li>
+              <li>Github Icon</li>
+              <li>Linkedin Icon</li>
             </ul>
             </div>
         </div>
