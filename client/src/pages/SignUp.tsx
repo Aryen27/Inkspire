@@ -1,5 +1,6 @@
 import React from 'react'
 import { useAuth } from '../components/authContext.tsx';
+import Button from '../ui/Button.tsx';
 
 function SignUp() {
 
@@ -60,9 +61,10 @@ function SignUp() {
     </div>
     
     <div className="flex justify-evenly items-center gap-4 pt-2">
-    <button type="submit" className="bg-teal-700 mb-2 py-1 px-3 rounded-md text-white hover:grow">SUBMIT</button>
+    <button type="submit" className="bg-teal-700 py-1 px-3 rounded-md text-white hover:border-teal-700 hover:text-teal-700 hover:bg-white hover:border">SUBMIT</button>
     </div>
-    </div>
+      </div>
+      <span className="flex gap-1 justify-center">Already have an account? <Button config={{type:'link', content: 'Login', url: `http://localhost:5173/auth/login`}}/> </span>
     </form>
     </div>
   </div>

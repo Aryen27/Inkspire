@@ -15,7 +15,7 @@ function Navbar() {
     LOGO
     </div>
     <div>
-    <Button config={{ content: 'Log In'}} />
+    <Button config={{type: 'solid', content: 'Log In', url: baseUrl+'auth/login'}} />
     </div>
     </div>
   )

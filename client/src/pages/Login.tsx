@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { redirect } from "react-router-dom";
 import { useAuth } from "../components/authContext.tsx";
+import Button from "../ui/Button.tsx";
 
 function Login() {
   let { login } = useAuth();
@@ -66,13 +67,14 @@ function Login() {
             <div className="flex justify-evenly items-center gap-4 pt-2">
               <button
                 type="submit"
-                className="bg-teal-700 py-1 px-3 rounded-md text-white hover:grow"
+                className="bg-teal-700 py-1 px-3 rounded-md text-white hover:border-teal-700 hover:text-teal-700 hover:bg-white hover:border"
               >
                 SUBMIT
               </button>
             </div>
           </div>
-        </form>
+          <span className="flex gap-1 justify-center">Don't have an account? <Button config={{type:'link', content: 'Sign Up', url: `http://localhost:5173/auth/signup`}}/> </span>
+          </form>
       </div>
     </div>
   );
