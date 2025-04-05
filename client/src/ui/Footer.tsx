@@ -1,4 +1,6 @@
 import React from 'react'
+import github_icon from '../assets/github_icon.svg'
+import linkedin_icon from '../assets/linkedin_icon.svg'
 
 function Footer() {
   return (
@@ -19,10 +21,10 @@ function Footer() {
           </ul>
           </div>
             <div>
-            <ul className='flex flex-col gap-1 pb-2'>
+            <ul className='flex flex-col gap-1 pb-2 items-start'>
             <li className='font-semibold' > Contact </li>
-              <li>Github Icon</li>
-              <li>Linkedin Icon</li>
+            <li className = 'flex gap-2 items-center' > Github &nbsp;   <img src = { github_icon } className='w-4 h-4'/></li>
+            <li className='flex gap-2 items-center'>Linkedin <img src = { linkedin_icon } className='w-4 h-4'/></li>
             </ul>
             </div>
         </div>
