@@ -5,11 +5,12 @@ import Button from "../ui/Button.tsx";
 
 function Login() {
   let { login } = useAuth();
+  const baseUrlServer: string = `http://localhost:5000/`;  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // const name = username.value;
-    // console.log(name);
+    console.log('form submitted');
+    // Get data from form
     const data:any = new FormData(e.target);
     const email: string = data.get("email");
     const password: string = data.get("password");
@@ -25,12 +26,14 @@ function Login() {
       credentials: "include",
     };
 
-    const res:any = await (await fetch("http://localhost:5000/auth/login", reqOptions)).text();
+    const res: any = await (await fetch(baseUrlServer + "auth/login", reqOptions));
     if (res.success != true && res.message) {
       throw new Error(res.message);
     }
-    console.log("Res: " + res);
-    login(body, res.token); //Set Auth status of app
+
+    const reqData = await res.json();
+    login(body, reqData.token); //Set Auth status of app
+    window.location.href= 'http://localhost:5173/';
   };
 
   return (
@@ -38,7 +41,7 @@ function Login() {
       <div className="flex items-center justify-center  max-h-fit md:h-fit">
         <form
           className="rounded-md shadow-xl mx-auto mt-4 py-5 pb-8 bg-white text-black min-h-min flex flex-col items-center justify-center gap-2 w-1/4 max-h-2  md:w-1/3 text-[0.5rem] md:mt-8"
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit} method="POST"
         >
           <legend className="text-lg text-teal-700 font-semibold">Login</legend>
           <div className="w-2/3 flex flex-col gap-3 font-semibold">
