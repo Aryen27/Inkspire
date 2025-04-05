@@ -11,7 +11,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children })=> {
   const [user, setUser] = useState<any>(null);
-  const [isAuthenticated, setIsAuthenticated] = useState<any>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   /*
   1. create function to check and get user data & token from local storage. Use useEffect to check if user has logged in even after the intial render ✅
@@ -30,8 +30,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
   
   const login = (userData: any, token: string) => {
-    localStorage.setItem('user', userData);
-    localStorage.setItem('token', token);
+    localStorage.setItem('user', JSON.stringify(userData));
+    localStorage.setItem('token',JSON.stringify(token));
     setIsAuthenticated(true);
     setUser(userData);
   };

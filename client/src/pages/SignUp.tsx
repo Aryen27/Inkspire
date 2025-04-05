@@ -1,9 +1,25 @@
 import React from 'react'
+import { useAuth } from '../components/authContext.tsx';
 
 function SignUp() {
+  let { user, login, logout, isAuthenticated } = useAuth();
+
   function handleSubmit(e) {
     e.preventDefault();
-    console.log('Hola');
+    // const name = username.value;
+    // console.log(name);
+    const data = new FormData(e.target);
+    const email: string = data.get('email');
+    const name: string = data.get('username');
+    const password: string = data.get('password');
+    const confirmPass = data.get('confirmPassword');
+
+    if (password != confirmPass) {
+      throw new Error('Passwords dont match!');
+    }
+
+    user = { name, email, password };
+    console.log(user);
   }
 
   return (
@@ -15,7 +31,7 @@ function SignUp() {
     <div className="w-2/3 flex flex-col gap-2 font-semibold">
     <div className="flex flex-col gap-1">
     <label htmlFor="username">Username</label>
-    <input type="text" name="username" id="username" required className="rounded-sm border-solid border-slate-300 border py-0.5 font-normal"/>
+    < input type = "text" name = "username" id = "username" maxLength = {10} required className="rounded-sm border-solid border-slate-300 border py-0.5 font-normal"/>
     </div>
     
     <div className="flex flex-col gap-1">
@@ -34,8 +50,7 @@ function SignUp() {
     </div>
     
     <div className="flex justify-evenly items-center gap-4 pt-2">
-    <button type="submit" className="bg-teal-700 py-1 px-3 rounded-md text-white hover:grow">SUBMIT</button>
-    <button type="reset" className="bg-teal-700 py-1 px-3 rounded-md text-white hover:grow">RESET</button>
+    <button type="submit" className="bg-teal-700 mb-2 py-1 px-3 rounded-md text-white hover:grow">SUBMIT</button>
     </div>
     </div>
     </form>
