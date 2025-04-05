@@ -2,7 +2,7 @@ import React from 'react'
 import { useAuth } from '../components/authContext.tsx';
 
 function SignUp() {
-  let { user, login, logout, isAuthenticated } = useAuth();
+  let { user, login, } = useAuth();
 
   function handleSubmit(e) {
     e.preventDefault();

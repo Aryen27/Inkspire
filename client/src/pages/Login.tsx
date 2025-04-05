@@ -3,18 +3,17 @@ import { redirect } from "react-router-dom";
 import { useAuth } from "../components/authContext.tsx";
 
 function Login() {
-  let { user, login, logout, isAuthenticated } = useAuth();
+  let { login, isAuthenticated } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     // const name = username.value;
     // console.log(name);
-    const data = new FormData(e.target);
+    const data:any = new FormData(e.target);
     const email: string = data.get("email");
     const password: string = data.get("password");
 
     const body = { email, password };
-    console.log(body);
 
     const reqOptions: any = {
       method: "POST",
@@ -25,11 +24,13 @@ function Login() {
       credentials: "include",
     };
 
-    const res = await (await fetch("http://localhost:5000/auth/login", reqOptions)).text();
-    if (res.success != true) {
+    const res:any = await (await fetch("http://localhost:5000/auth/login", reqOptions)).text();
+    if (res.success != true && res.message) {
       throw new Error(res.message);
     }
-    console.log("Res: "+res);
+    console.log("Res: " + res);
+    login(body, res.token);
+    console.log(isAuthenticated);
   };
 
   return (

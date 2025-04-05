@@ -30,6 +30,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
   
   const login = (userData: any, token: string) => {
+    console.log('AP func called!');
     localStorage.setItem('user', JSON.stringify(userData));
     localStorage.setItem('token',JSON.stringify(token));
     setIsAuthenticated(true);
