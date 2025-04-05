@@ -3,7 +3,7 @@ import { redirect } from "react-router-dom";
 import { useAuth } from "../components/authContext.tsx";
 
 function Login() {
-  let { login, isAuthenticated } = useAuth();
+  let { login } = useAuth();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -29,8 +29,7 @@ function Login() {
       throw new Error(res.message);
     }
     console.log("Res: " + res);
-    login(body, res.token);
-    console.log(isAuthenticated);
+    login(body, res.token); //Set Auth status of app
   };
 
   return (

@@ -12,10 +12,6 @@ const router = express.Router();
 // Encrypting password
 const saltRounds = 10;
 
-router.get('/login', (req, res) => {
-  // Render login page
-});
-
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   
@@ -54,10 +50,6 @@ router.post('/login', async (req, res) => {
     console.log(err);
     res.status(500).json({ success: false, message: err });
   }
-});
-
-router.get('/signup', (req, res) => {
-  // Render signup form
 });
 
 router.post('/signup', async (req, res) => {

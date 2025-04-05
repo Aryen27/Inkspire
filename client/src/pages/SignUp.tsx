@@ -2,9 +2,8 @@ import React from 'react'
 import { useAuth } from '../components/authContext.tsx';
 
 function SignUp() {
-  let { user, login, } = useAuth();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     // const name = username.value;
     // console.log(name);
@@ -18,10 +17,21 @@ function SignUp() {
       throw new Error('Passwords dont match!');
     }
 
-    user = { name, email, password };
-    console.log(user);
-  }
+    const body = { name, email, password };
+    
+    const reqOptions: any = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    }
 
+    const res = await fetch('http://localhost:5000/auth/signup', reqOptions);
+
+    if (res.status == 200)
+      console.log('Mission successful');
+  }
   return (
   <div className='bg-slate-50 h-screen'>
     <div className="flex items-center justify-center  max-h-fit md:h-fit">
