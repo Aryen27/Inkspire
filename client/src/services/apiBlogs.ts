@@ -24,7 +24,7 @@ export async function getBlogById(blogId) {
   return (resData);
 }
 
-async function updateBlog(blogId, newData) {
+export async function updateBlog(blogId, newData) {
   const reqOptions:any = {
     method: 'PATCH',
     headers: {
@@ -45,5 +45,24 @@ async function updateBlog(blogId, newData) {
   console.log(resData);
 }
 
-getAllBlogs();
+export async function deleteBlog(blogId) {
+  const reqOptions:any = {
+    method: 'DELETE',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  };
+
+  const res = await fetch(BASE_URL + 'blog/' + blogId, reqOptions);
+  if (!res.ok) {
+    const errorText = await res.text(); 
+    console.error(`Error ${res.status}:`, errorText);
+    return;
+  }
+
+  const resData = await res.json();
+  console.log(resData);
+}
+
 

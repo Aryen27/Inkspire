@@ -105,7 +105,7 @@ router.delete('/:id', protect, async (req, res) => {
 
 })
 
-router.patch('/:id', async (req, res) => {
+router.patch('/:id', protect, async (req, res) => {
   const bid = req.params.id;
   const { title, content } = req.body;
 
