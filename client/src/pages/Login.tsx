@@ -11,7 +11,6 @@ function Login() {
     e.preventDefault();
     // Get data from form
     const data: any = new FormData(e.target);
-    const username: string = data.get(name);
     const email: string = data.get("email");
     const password: string = data.get("password");
 
@@ -31,11 +30,11 @@ function Login() {
       throw new Error(res.message);
     }
     const resData = await res.json();
-    const user = resData.data;
-    console.log(user);
+    const { name }: { name: string } = resData.data;
+    const user= { name, email }
 
     login(user, resData.token); //Set Auth status of app
-    window.location.href= 'http://localhost:5173/';
+    window.location.href= 'http://localhost:5173/'; //Redirect to HOME
   };
 
   return (
