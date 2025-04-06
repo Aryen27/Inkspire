@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import HomeLayout from './pages/HomeLayout.tsx';
 import ErrorPage from './pages/ErrorPage.tsx';
-import Blog from './pages/Blog.tsx'
+import Blog, {loader as blogsLoader} from './pages/Blog.tsx'
 import UserPage from './pages/UserPage.tsx'
 import SignUp from './pages/SignUp.tsx';
 import Login from './pages/Login.tsx';
@@ -14,7 +14,8 @@ const router = createBrowserRouter([
       errorElement: <ErrorPage/>,
       children: [
         {
-          path: "",
+        path: "",
+        loader: blogsLoader,
         element: <Blog/>,
       },
       {

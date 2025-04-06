@@ -4,7 +4,7 @@ export async function getAllBlogs() {
   const res = await fetch(BASE_URL + 'blog/');
   if (!res.ok) {
     const errorText = await res.text(); 
-    console.error(`Error ${res.status}:`, errorText);
+    console.error(`Error ${res.status}: ${errorText}`);
     return;
   }
 
