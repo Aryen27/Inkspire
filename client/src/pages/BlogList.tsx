@@ -1,8 +1,9 @@
 import React from 'react'
 import { getAllBlogs } from '../services/apiBlogs';
 import { useLoaderData } from 'react-router-dom';
-import BlogCard from '../ui/BlogCard';
+import BlogSideCard from '../ui/BlogSideCard';
 import BlogContainer from '../ui/BlogContainer';
+
 
 export async function loader() {
   const blogs = await getAllBlogs();
@@ -12,8 +13,15 @@ export async function loader() {
 function BlogList() {
   let blogs = useLoaderData();
   blogs = blogs.data;
-  console.log(newest.splice(0,5));
-
+  let newest = blogs.sort((a, b) => {
+    const dateA = new Date(a.createdAt);
+    const dateB = new Date(b.createdAt);
+    if (dateA > dateB) return -1;
+    if (dateA < dateB) return 1;
+  
+    return b.likes - a.likes;
+  }).slice(0,10);
+  console.log(newest);
   return (
     <div className= 'w-11/12 flex mx-auto' >
       <div className='w-[60%]'>
@@ -21,8 +29,12 @@ function BlogList() {
         <BlogContainer key={blog.bid} blog={blog} />
       ))}
       </div>
-      <div className='w-[40%]'>  
-      < BlogCard />
+    <div className = 'w-[40%]' >  
+    {
+      newest.map((nb) => (
+        <BlogSideCard key={nb.bid} blog= {nb}  />
+      ))     
+    }
       </div>
     </div>
   )
