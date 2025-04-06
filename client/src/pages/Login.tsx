@@ -25,7 +25,7 @@ function Login() {
       credentials: "include",
     };
 
-    const res: any = await await fetch(
+    const res: any =  await fetch(
       baseUrlServer + "auth/login",
       reqOptions
     );
