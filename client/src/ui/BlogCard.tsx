@@ -1,6 +1,6 @@
 import React from 'react'
 
-function BlogCard() {
+function BlogCard(props) {
   return (
     <div>BlogCard</div>
   )
