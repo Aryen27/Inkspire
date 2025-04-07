@@ -8,6 +8,7 @@ export const protect= async (req,res,next)=> {
   3. Check if user exists
   4. Check if user changed pw after jwt was issued- To be implemented later
   */
+  console.log(req.headers);
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
     token = req.headers.authorization.split(' ')[1];
@@ -21,7 +22,7 @@ export const protect= async (req,res,next)=> {
   try {
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   } catch (err) {
-    return res.status(401).json({ message: 'Please login to get access' });
+    return res.status(403).json({ message: err });
   }
     const uid = decoded.id; 
 

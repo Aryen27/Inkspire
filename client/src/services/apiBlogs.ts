@@ -1,19 +1,22 @@
 const BASE_URL: string = 'http://localhost:5000/';
 
-export async function getAllBlogs() {
-  const res = await fetch(BASE_URL + 'blog/');
-  if (!res.ok) {
-    const errorText = await res.text(); 
-    console.error(`Error ${res.status}: ${errorText}`);
-    return;
-  }
-
-  const resData = await res.json();
-  return (resData);
+function getReqOptions() {
+  const reqOptions: any = {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": 'Bearer '+localStorage.getItem('token'),
+    },
+    credentials: "include",
+  };
+  return reqOptions
 }
 
+
 export async function getBlogById(blogId) {
-  const res = await fetch(BASE_URL + 'blog/' + blogId);
+
+  const reqOptions = getReqOptions();
+  const res = await fetch(BASE_URL + 'blog/' + blogId, reqOptions);
   if (!res.ok) {
     const errorText = await res.text(); 
     console.error(`Error ${res.status}:`, errorText);
@@ -21,6 +24,19 @@ export async function getBlogById(blogId) {
   }
 
   const resData = await res.json();
+  // console.log(resData.data[0]);
+  return (resData.data[0]);
+}
+
+export async function getAllBlogs() {
+  const res = await fetch(BASE_URL + 'blog/');
+  if (!res.ok) {
+    const errorText = await res.text(); 
+    console.error(`Error ${res.status}: ${errorText}`);
+    return;
+  }
+  const resData = await res.json();
+  console.log(resData);
   return (resData);
 }
 
@@ -40,9 +56,9 @@ export async function updateBlog(blogId, newData) {
     console.error(`Error ${res.status}:`, errorText);
     return;
   }
-
+  
   const resData = await res.json();
-  console.log(resData);
+  return(resData);
 }
 
 export async function deleteBlog(blogId) {
@@ -64,5 +80,6 @@ export async function deleteBlog(blogId) {
   const resData = await res.json();
   console.log(resData);
 }
+
 
 
