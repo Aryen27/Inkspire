@@ -1,5 +1,5 @@
 import React from 'react'
-import { getAllBlogs } from '../services/apiBlogs';
+import { getAllBlogs, updateBlog } from '../services/apiBlogs';
 import { useLoaderData } from 'react-router-dom';
 import BlogSideCard from '../ui/BlogSideCard';
 import BlogContainer from '../ui/BlogContainer';
@@ -7,6 +7,11 @@ import BlogContainer from '../ui/BlogContainer';
 
 export async function loader() {
   const blogs = await getAllBlogs();
+  const updatedBlog= await updateBlog(5, {
+    "title": "Mastering the JavaScript Promises!",
+    "content": "Promises in JavaScript allow you to handle asynchronous operations more cleanly. This blog covers how to create, chain, and handle errors using promises in real-world scenarios."
+  });
+  console.log(updatedBlog);
   return blogs;
 }
 
