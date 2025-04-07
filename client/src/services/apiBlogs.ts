@@ -1,21 +1,24 @@
 const BASE_URL: string = 'http://localhost:5000/';
 
-function getReqOptions() {
-  const reqOptions: any = {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": 'Bearer '+localStorage.getItem('token'),
-    },
-    credentials: "include",
-  };
+function getReqOptions(m:string, body:any) {
+  let reqOptions: any;
+  if (!body) { 
+    reqOptions = {
+      method: m,
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": 'Bearer '+localStorage.getItem('token'),
+      },
+      credentials: "include",
+    };
+  }
   return reqOptions
 }
 
 
 export async function getBlogById(blogId) {
 
-  const reqOptions = getReqOptions();
+  const reqOptions = getReqOptions("GET");
   const res = await fetch(BASE_URL + 'blog/' + blogId, reqOptions);
   if (!res.ok) {
     const errorText = await res.text(); 
