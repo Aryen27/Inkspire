@@ -32,13 +32,12 @@ router.post('/login', async (req, res) => {
     // Check passwords
     const name = results[0].name;
     const storedPassword = results[0].password;
-    bcrypt.compare(password, storedPassword, (err, results) => {
-      if (err)
-        throw err;
-      if (!results) {
-        res.status(401).json({ success: false, message: 'Password is incorrect' });
-      }
-    });
+    const passwordMatch = await bcrypt.compare(password, storedPassword);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ success: false, message: 'Password is incorrect' });
+    }
+
     console.log(results[0].uid);
     // Generate token for user
     const token = jwt.sign({ id: results[0].uid }, process.env.JWT_SECRET, {

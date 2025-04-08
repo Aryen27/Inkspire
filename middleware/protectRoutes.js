@@ -1,42 +1,47 @@
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'
+import mysql from 'mysql2/promise';
+import connectionCred from '../db/connection.js';
+import 'dotenv/config'
+
+const connection = connectionCred;
 
 export const protect= async (req,res,next)=> {
   /*
-  1. Get token & check if it is present
-  2. Validate token
-  3. Check if user exists
   4. Check if user changed pw after jwt was issued- To be implemented later
   */
   console.log(req.headers);
   let token;
   if (req.headers.authorization && req.headers.authorization.startsWith('Bearer')) {
-    token = req.headers.authorization.split(' ')[1];
+    token = req.headers.authorization?.split(' ')[1];
   }
   console.log(token);
   if (!token) {
     return res.status(401).json({ message: 'Please login to get access' });
   }
-
   let decoded;
   try {
-    const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+    decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
   } catch (err) {
-    return res.status(403).json({ message: err });
+    console.error('JWT verify error:', err);
+  return res.status(403).json({ message: err.message });
   }
-    const uid = decoded.id; 
+  console.log(decoded);
+  const uid = decoded.id; 
+  console.log('Uid: '+uid);
 
   // Async by default
   let user;
   try {
     const [results, fields] = await connection.query('SELECT * FROM `users` WHERE uid=?', [uid]);
-    console.log(results);
+    console.log('results: '+results);
     if (results.length == 0) {
       return res.status(404).json({ message: 'User not found!. Try logging in again' });
     }
-    user = results[0];
+    user = results;
+    console.log('user:'+user);
   } catch (err) {
-    return res.status(500).json({ message: 'Internal server error' });
+    return res.status(500).json({ message: err });
   }
 
   // Granting Access to routes

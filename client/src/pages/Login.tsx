@@ -25,18 +25,18 @@ function Login() {
       credentials: "include",
     };
 
-    const res: any =  await fetch(
-      baseUrlServer + "auth/login",
-      reqOptions
-    );
-    if (res.success != true && res.message) {
-      throw new Error(res.message);
-    }
+    const res = await fetch(baseUrlServer + "auth/login", reqOptions);
     const resData = await res.json();
+    
+    if (!res.ok || resData.success !== true) {
+      throw new Error(resData.message || 'Login failed');
+    }
+    
     const { name }: { name: string } = resData.data;
     const user = { name, email };
+    
 
-    await login(user, resData.token); //Set Auth status of app
+    await login(JSON.stringify(user), resData.token); //Set Auth status of app
     window.location.href = "http://localhost:5173/"; //Redirect to HOME
   };
 

@@ -1,6 +1,11 @@
 const BASE_URL: string = 'http://localhost:5000/';
 
-function getReqOptions(m:string, body:any) {
+function getReqOptions(m: string, body: any) {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('Token not found');
+  }
+
   let reqOptions: any;
   if (!body) { 
     reqOptions = {
@@ -10,6 +15,17 @@ function getReqOptions(m:string, body:any) {
         "Authorization": 'Bearer '+localStorage.getItem('token'),
       },
       credentials: "include",
+    };
+  }
+  else {
+    reqOptions = {
+      method: m,
+      headers: {
+        "Authorization": 'Bearer '+token,
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(body),
     };
   }
   return reqOptions
@@ -44,16 +60,9 @@ export async function getAllBlogs() {
 }
 
 export async function updateBlog(blogId, newData) {
-  const reqOptions:any = {
-    method: 'PATCH',
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newData),
-    credentials: "include",
-  }
+  const reqOptions = getReqOptions("PATCH", newData);
 
-  const res = await fetch(BASE_URL + 'blog/' + blogId, reqOptions);
+  const res = await fetch(`${BASE_URL}blog/${blogId}`, reqOptions);
   if (!res.ok) {
     const errorText = await res.text(); 
     console.error(`Error ${res.status}:`, errorText);

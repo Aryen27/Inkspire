@@ -23,6 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
+    console.log('Raw user from localStorage:', user); 
     if (token && user) {
       setUser(JSON.parse(user));
       setIsAuthenticated(true);
@@ -32,9 +33,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const login = (userData: any, token: string) => {
     console.log('AP func called!');
     localStorage.setItem('user', JSON.stringify(userData));
-    localStorage.setItem('token',JSON.stringify(token));
+    localStorage.setItem('token',token);
     setIsAuthenticated(true);
-    setUser(userData);
+    setUser(JSON.parse(user));
   };
 
   const logout = () => {
