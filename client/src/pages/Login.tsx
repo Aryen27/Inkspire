@@ -36,7 +36,7 @@ function Login() {
     const user = { name, email };
     
 
-    await login(JSON.stringify(user), resData.token); //Set Auth status of app
+    await login(user, resData.token); //Set Auth status of app
     window.location.href = "http://localhost:5173/"; //Redirect to HOME
   };
 

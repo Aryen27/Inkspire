@@ -23,7 +23,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user = localStorage.getItem('user');
-    console.log('Raw user from localStorage:', user); 
     if (token && user) {
       setUser(JSON.parse(user));
       setIsAuthenticated(true);
