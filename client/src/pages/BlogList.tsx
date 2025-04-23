@@ -37,6 +37,7 @@ function BlogList() {
       ))}
       </div>
     <div className = 'w-[40%]' >  
+    <span className='pl-5 font-bold text-[0.8rem] uppercase text-teal-700'>Trending </span>
     {
       newest.map((nb) => (
         <BlogSideCard key={nb.bid} blog= {nb}  />
