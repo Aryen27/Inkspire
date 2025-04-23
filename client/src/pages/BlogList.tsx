@@ -1,5 +1,5 @@
 import React from 'react'
-import { getAllBlogs, updateBlog, getBlogById } from '../services/apiBlogs';
+import { getAllBlogs, updateBlog, getBlogById, deleteBlog } from '../services/apiBlogs';
 import { useLoaderData } from 'react-router-dom';
 import BlogSideCard from '../ui/BlogSideCard';
 import BlogContainer from '../ui/BlogContainer';
@@ -28,7 +28,7 @@ function BlogList() {
   }).slice(0,10);
   console.log(newest);
   return (
-    <div className= 'w-11/12 flex mx-auto' >
+    <div className= 'w-3/4 flex mx-auto mt-10' > /*mt-temporary*/
       <div className='w-[60%]'>
       {blogs.map((blog) => (
         <BlogContainer key={blog.bid} blog={blog} />
