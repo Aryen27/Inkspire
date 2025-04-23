@@ -27,8 +27,10 @@ function BlogList() {
     return b.likes - a.likes;
   }).slice(0,10);
   console.log(newest);
+
+  /*mt-temporary*/
   return (
-    <div className= 'w-3/4 flex mx-auto mt-10' > /*mt-temporary*/
+    <div className= 'w-3/4 flex mx-auto mt-10' > 
       <div className='w-[60%]'>
       {blogs.map((blog) => (
         <BlogContainer key={blog.bid} blog={blog} />
