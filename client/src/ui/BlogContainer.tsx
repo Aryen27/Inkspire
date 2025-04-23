@@ -5,7 +5,7 @@ function BlogConatiner({ blog }) {
   let blogDate:(string|Date) = new Date(blog.createdAt);
   blogDate = blogDate.toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" });
   return (
-    <div className='my-2 border-b w-[90%]'>
+    <div className=' border-t w-[90%] py-2'>
     <h4 className='font-bold text-md'> 
     {blog.title}
     </h4>

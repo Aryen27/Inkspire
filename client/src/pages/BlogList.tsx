@@ -36,7 +36,7 @@ function BlogList() {
         <BlogContainer key={blog.bid} blog={blog} />
       ))}
       </div>
-    <div className = 'w-[40%]' >  
+    <div className = 'w-[40%] border-l' >  
     <span className='pl-5 font-bold text-[0.8rem] uppercase text-teal-700'>Trending </span>
     {
       newest.map((nb) => (
