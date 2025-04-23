@@ -3,6 +3,7 @@ import { getAllBlogs, updateBlog, getBlogById, deleteBlog } from '../services/ap
 import { useLoaderData } from 'react-router-dom';
 import BlogSideCard from '../ui/BlogSideCard';
 import BlogContainer from '../ui/BlogContainer';
+import downArrow from '../assets/down-arrow.png'
 
 
 export async function loader() {
@@ -37,13 +38,15 @@ function BlogList() {
       ))}
       </div>
     <div className = 'w-[40%] border-l' >  
-    <span className='pl-5 font-bold text-[0.8rem] uppercase text-teal-700'>Trending </span>
+    <span className='pl-6 font-bold text-[0.8rem] uppercase text-teal-700'>Trending ✨</span>
     {
       newest.map((nb) => (
         <BlogSideCard key={nb.bid} blog= {nb}  />
       ))     
     }
-      </div>
+    
+  <button className='flex items-center pl-6 text-[0.5rem] text-slate-400 hover:underline' > See the full list < img className = 'h-[15px] w-[15px]' src = {downArrow} /></button>
+    </div>
     </div>
   )
 }
