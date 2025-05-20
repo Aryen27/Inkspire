@@ -1,6 +1,5 @@
 import jwt from 'jsonwebtoken'
 import { promisify } from 'util'
-import mysql from 'mysql2/promise';
 import connectionCred from '../db/connection.js';
 import 'dotenv/config'
 
@@ -44,7 +43,7 @@ export const protect= async (req,res,next)=> {
     return res.status(500).json({ message: err });
   }
 
-  // Granting Access to routes
+  // Grant Access to routes
   next();
 }
 
